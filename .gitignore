@@ -1,0 +1,4 @@
+# Gitignore file
+*.o
+*.c~O
+
