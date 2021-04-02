@@ -1,9 +1,9 @@
 #pragma once
 #include "game.h"
 #include "html.h"
+#include "motion.h"
 #include "moveFigure.h"
 #include "parcer.h"
-#include "motion.h"
 
 //пробел - пустое поле
 //большие буквы белые, маленькие черные
