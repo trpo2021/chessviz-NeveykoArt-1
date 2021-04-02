@@ -29,7 +29,6 @@ typedef struct {
     bool flag_transformation;
     char transformation_figure;
 
-
     char figure;
     //фигура, которой ходим
     //большими буквами PQKBNR
@@ -49,19 +48,16 @@ typedef struct {
 // r - ладья
 //черные сверху
 
-
 //Пометки, замечания и тд
 //Пешка может превратиться в короля?  Good
 //Нету превращения пешки + шах / мат
 
-
-//html.c
+// html.c
 void addStartHTML(FILE* file);
 void addEndHTML(FILE* file);
 void addChessHTML(FILE* file, char chess[8][8], char* move);
 
-
-//moveFigure.c
+// moveFigure.c
 bool movePWhite(motion the_motion, char chess[8][8]);
 bool movePBlack(motion the_motion, char chess[8][8]);
 bool moveB(motion the_motion, char chess[8][8]);
@@ -70,12 +66,12 @@ bool moveK(motion the_motion, char chess[8][8]);
 bool moveQ(motion the_motion, char chess[8][8]);
 bool moveR(motion the_motion, char chess[8][8]);
 
-//parcer.c
+// parcer.c
 bool checkNumberMove(char* number_move);
 bool checkPositionMove(char symbol, char number);
 bool checkMove(char* move, motion* the_motion, enum BlackWhite color);
 
-//game.c
+// game.c
 bool switchMove(motion the_motion, char chess[8][8]);
 void print_the_motion(motion the_motion);
 void printChess(char chess[8][8]);

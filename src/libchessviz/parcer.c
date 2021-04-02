@@ -2,24 +2,21 @@
 
 bool checkNumberMove(char* number_move)
 {
-    if(number_move == NULL)
-    {
+    if (number_move == NULL) {
         return false;
-    }
-    else
-    {
+    } else {
         int size = strlen(number_move);
-        if(size == 1)
+        if (size == 1)
             return false;
 
-        if(number_move[size-1] != '.')
+        if (number_move[size - 1] != '.')
             return false;
 
-        if(number_move[0] == '0')
+        if (number_move[0] == '0')
             return false;
 
-        for(int i = 0; i < size-1; i++)
-            if(number_move[i] < '1' || number_move[i] > '9')
+        for (int i = 0; i < size - 1; i++)
+            if (number_move[i] < '1' || number_move[i] > '9')
                 return false;
     }
 
@@ -28,19 +25,17 @@ bool checkNumberMove(char* number_move)
 
 bool checkMove(char* move, motion* the_motion, enum BlackWhite color)
 {
-    if(move == NULL)
+    if (move == NULL)
         return false;
 
     the_motion->color = color;
 
-    if(strcmp(move, "0-0") == 0)
-    {
+    if (strcmp(move, "0-0") == 0) {
         the_motion->castling = Short;
         return true;
     }
 
-    if(strcmp(move, "0-0-0") == 0)
-    {
+    if (strcmp(move, "0-0-0") == 0) {
         the_motion->castling = Long;
         return true;
     }
@@ -50,37 +45,28 @@ bool checkMove(char* move, motion* the_motion, enum BlackWhite color)
     int position = 0;
     int size = strlen(move);
 
-    if(size < 5)
+    if (size < 5)
         return false;
 
     //какой фигурой будет ход
-    if(strchr("NBKQR", move[position]) != NULL)
-    {
+    if (strchr("NBKQR", move[position]) != NULL) {
         the_motion->figure = move[position];
         position++;
-    }
-    else
-    {
+    } else {
         the_motion->figure = 'P';
     }
 
-    if(checkPositionMove(move[position], move[position+1]))
-    {
-        if(checkPositionMove(move[position+3], move[position+4]))
-        {
+    if (checkPositionMove(move[position], move[position + 1])) {
+        if (checkPositionMove(move[position + 3], move[position + 4])) {
             the_motion->start_position_x = move[position] - 'a';
             the_motion->start_position_y = 7 - (move[position + 1] - '1');
 
             the_motion->end_position_x = move[position + 3] - 'a';
             the_motion->end_position_y = 7 - (move[position + 4] - '1');
-        }
-        else
-        {
+        } else {
             return false;
         }
-    }
-    else
-    {
+    } else {
         return false;
     }
 
@@ -93,41 +79,35 @@ bool checkMove(char* move, motion* the_motion, enum BlackWhite color)
     }
 
     position += 5;
-    if(position == size || (position+1 == size && move[position] == '\n'))
+    if (position == size || (position + 1 == size && move[position] == '\n'))
         return true;
 
-    if(strchr("NBRQ", move[position]) != NULL && the_motion->figure == 'P')
-    {
+    if (strchr("NBRQ", move[position]) != NULL && the_motion->figure == 'P') {
         the_motion->transformation_figure = move[position];
         the_motion->flag_transformation = true;
         position++;
-    }
-    else if(size >= position + 4)   //может присутствовать e.p.
+    } else if (size >= position + 4) //может присутствовать e.p.
     {
-        if(move[position] == 'e' && move[position+1] == '.' && move[position+2] == 'p' && move[position+3] == '.' && the_motion->figure == 'P')
-        {
+        if (move[position] == 'e' && move[position + 1] == '.'
+            && move[position + 2] == 'p' && move[position + 3] == '.'
+            && the_motion->figure == 'P') {
             the_motion->flag_ep = true;
             position += 4;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
 
-    if(position == size || (position+1 == size && move[position] == '\n'))
+    if (position == size || (position + 1 == size && move[position] == '\n'))
         return true;
 
-    if(size == position+1)
-    {
-        if(move[position] == '+')
-        {
+    if (size == position + 1) {
+        if (move[position] == '+') {
             the_motion->flag_shah = true;
             return true;
         }
 
-        if(move[position] == '#')
-        {
+        if (move[position] == '#') {
             the_motion->flag_cmate = true;
             return true;
         }
@@ -135,14 +115,13 @@ bool checkMove(char* move, motion* the_motion, enum BlackWhite color)
         return false;
     }
 
-
     return false;
 }
 
 bool checkPositionMove(char symbol, char number)
 {
-    if(symbol >= 'a' && symbol <= 'h')
-        if(number >= '1' && number <= '8')
+    if (symbol >= 'a' && symbol <= 'h')
+        if (number >= '1' && number <= '8')
             return true;
     return false;
 }

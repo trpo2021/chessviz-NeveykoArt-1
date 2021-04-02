@@ -2,8 +2,7 @@
 
 int main(int argc, char* argv[])
 {
-    if(argc != 2)
-    {
+    if (argc != 2) {
         printf("./exe file_move\n");
         return -1;
     }
@@ -24,46 +23,39 @@ int main(int argc, char* argv[])
     char moves[n];
     bool flag_cmate = false;
 
-    while (fgets(moves, n, file_moves) != NULL)
-    {
-        char * first_word = strtok(moves, " ");
+    while (fgets(moves, n, file_moves) != NULL) {
+        char* first_word = strtok(moves, " ");
 
-        if(!checkNumberMove(first_word))
-        {
+        if (!checkNumberMove(first_word)) {
             printf("Error first_word\n");
             return -1;
         }
 
         enum BlackWhite color = White;
 
-        for(int i = 0; i < 2; i++)
-        {
-            char * move_string = strtok(NULL, " ");
+        for (int i = 0; i < 2; i++) {
+            char* move_string = strtok(NULL, " ");
 
             motion the_motion = initMotion();
             bool res = checkMove(move_string, &the_motion, color);
 
-            if(res == false)
-            {
+            if (res == false) {
                 printf("Error move_string _%s_\n", move_string);
                 return -1;
             }
 
             printf("%s\n", move_string);
-            if (_move(the_motion, chess))
-            {
+            if (_move(the_motion, chess)) {
                 addChessHTML(file_html, chess, move_string);
                 printChess(chess);
-            }
-            else
-            {
+            } else {
                 printf("Error switchMove White\n");
                 return -1;
             }
 
             if (the_motion.flag_cmate == true) {
                 //конец партии
-                //printf("White win!\n");
+                // printf("White win!\n");
                 flag_cmate = true;
                 break;
             }
@@ -71,13 +63,11 @@ int main(int argc, char* argv[])
             color = Black;
         }
 
-        if(flag_cmate)
-        {
+        if (flag_cmate) {
             break;
         }
     }
     printf("\n\n\t\tThe end\n");
-
 
     addEndHTML(file_html);
     fclose(file_html);

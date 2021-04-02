@@ -91,17 +91,16 @@ bool _move(motion the_motion, char chess[8][8])
 
 motion initMotion()
 {
-    motion the_motion = {
-        .type_motion = false,
+    motion the_motion
+            = {.type_motion = false,
 
-        .flag_shah = false,
-        .flag_cmate = false,
-        .flag_ep = false,
-        .flag_transformation = false,
-        .transformation_figure = ' ',
+               .flag_shah = false,
+               .flag_cmate = false,
+               .flag_ep = false,
+               .flag_transformation = false,
+               .transformation_figure = ' ',
 
-        .castling = Without
-    };
+               .castling = Without};
 
     return the_motion;
 }
