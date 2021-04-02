@@ -50,7 +50,7 @@ int main(int argc, char* argv[])
             }
 
             printf("%s\n", move_string);
-            if (switchMove(the_motion, chess))
+            if (_move(the_motion, chess))
             {
                 addChessHTML(fileHTML, chess, move_string);
                 printChess(chess);

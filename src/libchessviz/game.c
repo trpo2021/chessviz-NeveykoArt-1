@@ -57,7 +57,7 @@ void print_the_motion(motion the_motion)
     printf("Castling = %d\n", the_motion.castling);
 }
 
-bool switchMove(motion the_motion, char chess[8][8])
+bool _move(motion the_motion, char chess[8][8])
 {
     bool result = false;
 

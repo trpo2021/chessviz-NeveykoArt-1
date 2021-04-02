@@ -76,7 +76,7 @@ bool checkPositionMove(char symbol, char number);
 bool checkMove(char* move, motion* the_motion, enum BlackWhite color);
 
 //game.c
-bool switchMove(motion the_motion, char chess[8][8]);
+bool _move(motion the_motion, char chess[8][8]);
 void print_the_motion(motion the_motion);
 void printChess(char chess[8][8]);
 void createChess(char chess[8][8]);
