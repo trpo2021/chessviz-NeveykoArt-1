@@ -11,11 +11,11 @@ int main(int argc, char* argv[])
     char chess[8][8];
     createChess(chess);
 
-    FILE* fileHTML = fopen("chess.html", "w+");
-    addStartHTML(fileHTML);
-    addChessHTML(fileHTML, chess, "");
+    FILE* file_html = fopen("chess.html", "w+");
+    addStartHTML(file_html);
+    addChessHTML(file_html, chess, "");
 
-    FILE* fileMoves = fopen(argv[1], "r");
+    FILE* file_moves = fopen(argv[1], "r");
 
     printf("Start chess table:\n");
     printChess(chess);
@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
     char moves[n];
     bool flag_cmate = false;
 
-    while (fgets(moves, n, fileMoves) != NULL)
+    while (fgets(moves, n, file_moves) != NULL)
     {
         char * first_word = strtok(moves, " ");
 
@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
             printf("%s\n", move_string);
             if (_move(the_motion, chess))
             {
-                addChessHTML(fileHTML, chess, move_string);
+                addChessHTML(file_html, chess, move_string);
                 printChess(chess);
             }
             else
@@ -79,9 +79,9 @@ int main(int argc, char* argv[])
     printf("\n\n\t\tThe end\n");
 
 
-    addEndHTML(fileHTML);
-    fclose(fileHTML);
-    fclose(fileMoves);
+    addEndHTML(file_html);
+    fclose(file_html);
+    fclose(file_moves);
 
     return 0;
 }
