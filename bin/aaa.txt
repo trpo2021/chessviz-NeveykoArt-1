@@ -1,0 +1,8 @@
+1. d2-d4 e7-e5
+2. d4xe5 f7-f5
+3. e5xf6e.p. c7-c5
+4. f6xg7 c5-c4
+5. g7xh8Q d7-d5
+6. b2-b4 c4xb3e.p.
+7. h2-h4 b3xa2
+8. h4-h5 a2xb1N
