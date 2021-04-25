@@ -266,12 +266,19 @@ bool moveR(motion the_motion, char chess[8][8])
     return true;
 }
 
-bool moveK(motion the_motion, char chess[8][8])
+bool moveQ(motion the_motion, char chess[8][8])
 {
-    return false;
+    if (!(checkAbilityR(the_motion, chess) || checkAbilityB(the_motion, chess))
+        || !checkStartPosition(the_motion, chess)
+        || !checkEndPosition(the_motion, chess)) {
+        return false;
+    }
+
+    makeMove(the_motion, chess);
+    return true;
 }
 
-bool moveQ(motion the_motion, char chess[8][8])
+bool moveK(motion the_motion, char chess[8][8])
 {
     return false;
 }
