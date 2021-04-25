@@ -63,12 +63,7 @@ bool _move(motion the_motion, char chess[8][8])
 
     switch (the_motion.figure) {
     case 'P':
-        if (the_motion.color == White) {
-            result = movePWhite(the_motion, chess);
-        }
-        if (the_motion.color == Black) {
-            result = movePBlack(the_motion, chess);
-        }
+        result = moveP(the_motion, chess);
         break;
     case 'B':
         //  result = moveB(the_motion, chess);

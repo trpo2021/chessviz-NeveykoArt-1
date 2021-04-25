@@ -1,272 +1,146 @@
 #include "chess.h"
 
-bool movePWhite(motion the_motion, char chess[8][8])
+static enum BlackWhite getColor(char figure)
 {
-    if (chess[the_motion.start_position_y][the_motion.start_position_x]
-        == 'P') {
-        if (the_motion.flag_ep == 1) {
-            if ((chess[the_motion.end_position_y][the_motion.end_position_x]
-                 == ' ') //проверка взятия на проходе если true
-                && (chess[the_motion.start_position_y]
-                         [the_motion.end_position_x]
-                    == 'p')
-                && ((the_motion.start_position_y - the_motion.end_position_y)
-                    == 1) //радиус съедания
-                && (abs(the_motion.start_position_x - the_motion.end_position_x)
-                    == 1)) {
-                //взятие пешки на проходе
-                chess[the_motion.start_position_y][the_motion.end_position_x]
-                        = ' '; //убираем съединую пешку
-                chess[the_motion.end_position_y][the_motion.end_position_x]
-                        = 'P'; //переноси пешку куда ходим
-                chess[the_motion.start_position_y][the_motion.start_position_x]
-                        = ' '; //удаляем пешку которой ходим
-                return true;
-            } else {
-                return false;
-            }
+    if (islower(figure)) {
+        return Black;
+    } else {
+        return White;
+    }
+}
 
-        } else if (the_motion.flag_transformation == 1) {
-            if (the_motion.type_motion) // взятие по диагонали вперед
-            {
-                if (islower(chess[the_motion.end_position_y]
-                                 [the_motion.end_position_x])
-                    && ((the_motion.start_position_y
-                         - the_motion.end_position_y)
-                        == 1) //радиус съедания
-                    && (abs(the_motion.start_position_x
-                            - the_motion.end_position_x)
-                        == 1)) {
-                    chess[the_motion.start_position_y]
-                         [the_motion.start_position_x]
-                            = ' '; //убираем изначальную пешку
-                    chess[the_motion.end_position_y][the_motion.end_position_x]
-                            = the_motion.transformation_figure; //ставим фигуру
-                    return true; //взятие если true
-                } else
-                    return false;
-            } else { // тихий ход вперед
-                if ((the_motion.end_position_x == the_motion.start_position_x)
-                    && (the_motion.end_position_y
-                        < the_motion.start_position_y)) //проверяем что идем
-                                                        //вперед
-                {
-                    if (chess[the_motion.start_position_y - 1]
-                             [the_motion.start_position_x]
-                        == ' ') //на 1 клетку вперед нет фигуры
-                    {
-                        chess[the_motion.start_position_y]
-                             [the_motion.start_position_x]
-                                = ' '; //убираем изначальную пешку
-                        chess[the_motion.end_position_y]
-                             [the_motion.end_position_x]
-                                = the_motion.transformation_figure; //ставим
-                                                                    //фигуру
-                        return true;
-                    }
-                }
-            }
-        } else {
-            if (the_motion.type_motion) { //взятие
-                if ((chess[the_motion.end_position_y][the_motion.end_position_x]
-                     != ' ')
-                    && (the_motion.color == White)
-                    && ((the_motion.start_position_y
-                         - the_motion.end_position_y)
-                        == 1) //радиус съедания
-                    && (abs(the_motion.start_position_x
-                            - the_motion.end_position_x)
-                        == 1)) {
-                    chess[the_motion.start_position_y]
-                         [the_motion.start_position_x]
-                            = ' '; //убираем изначальную пешку
-                    chess[the_motion.end_position_y][the_motion.end_position_x]
-                            = 'P'; //переноси пешку куда ходим
-                    return true; //взятие если true
-                } else
-                    return false;
-            } else {
-                //тихий
-                if ((the_motion.end_position_x == the_motion.start_position_x)
-                    && (the_motion.end_position_y
-                        < the_motion.start_position_y)) //проверяем что идем
-                                                        //вперед
-                {
-                    if (chess[the_motion.start_position_y - 1]
-                             [the_motion.start_position_x]
-                        == ' ') //на 1 клетку вперед нет фигуры
-                    {
-                        if ((chess[the_motion.start_position_y - 2]
-                                  [the_motion.start_position_x]
-                             == ' ') // пусто на второй клетке
-                            && (the_motion.start_position_y
-                                == 1)) //ход на 2 если нужный ряд
-                        {
-                            //ход на 2
-                            chess[the_motion.start_position_y]
-                                 [the_motion.start_position_x]
-                                    = ' '; //убираем изначальную пешку
-                            chess[the_motion.end_position_y]
-                                 [the_motion.end_position_x]
-                                    = 'P'; //переноси пешку куда ходим
-                            return true;
-                        } else {
-                            //ход на 1
-                            chess[the_motion.start_position_y]
-                                 [the_motion.start_position_x]
-                                    = ' '; //убираем изначальную пешку
-                            chess[the_motion.end_position_y]
-                                 [the_motion.end_position_x]
-                                    = 'P'; //переноси пешку куда ходим
-                            return true;
-                        }
-                    } else
-                        return false;
-                } else
-                    return false;
-            }
-        }
-    } else
-        return false;
+static bool checkAbilityP(motion the_motion, char chess[8][8])
+{
+    int start_y = the_motion.start_position_y;
+    int start_x = the_motion.start_position_x;
+    int end_y = the_motion.end_position_y;
+    int end_x = the_motion.end_position_x;
+
+    int direction, start_horizont;
+    char figure;
+    if (getColor(chess[start_y][start_x]) == White) {
+        direction = 1;
+        start_horizont = 6; //?
+        figure = 'p';
+    } else {
+        direction = -1;
+        start_horizont = 1;
+        figure = 'P';
+    }
+
+    int delta_y = direction * (start_y - end_y);
+    int delta_x = direction * (start_x - end_x);
+
+    if ((delta_y == 1) && (start_x == end_x)) {
+        return true;
+    } else if (
+            (delta_y == 2) && (start_x == end_x)
+            && (chess[end_y + direction][start_x] == ' ')
+            && (start_y == start_horizont)) {
+        return true;
+    } else if (
+            (the_motion.flag_ep == 1) && (delta_y == 1) && (abs(delta_x) == 1)
+            && (chess[start_y][end_x] == figure)) {
+        return true;
+    } else if (
+            (the_motion.type_motion == 1) && (delta_y == 1)
+            && (abs(delta_x) == 1)) {
+        return true;
+    }
     return false;
 }
 
-bool movePBlack(motion the_motion, char chess[8][8])
+static bool checkAbilityEP(motion the_motion, char chess[8][8])
 {
-    if (chess[the_motion.start_position_y][the_motion.start_position_x]
-        == 'p') {
-        if (the_motion.flag_ep == 1) {
-            if ((chess[the_motion.end_position_y][the_motion.end_position_x]
-                 == ' ') //проверка взятия на проходе если true
-                && (chess[the_motion.start_position_y]
-                         [the_motion.end_position_x]
-                    == 'P')
-                && ((the_motion.end_position_y - the_motion.start_position_y)
-                    == 1) //радиус съедания
-                && (abs(the_motion.start_position_x - the_motion.end_position_x)
-                    == 1)) {
-                //взятие пешки на проходе
-                chess[the_motion.start_position_y][the_motion.end_position_x]
-                        = ' '; //убираем съединую пешку
-                chess[the_motion.end_position_y][the_motion.end_position_x]
-                        = 'p'; //переноси пешку куда ходим
-                chess[the_motion.start_position_y][the_motion.start_position_x]
-                        = ' '; //удаляем пешку которой ходим
-                return true;
-            } else {
-                return false;
-            }
-        } else if (the_motion.flag_transformation == 1) {
-            if (the_motion.end_position_y == 7) {
-                if (the_motion.type_motion) // взятие по диагонали вперед
-                {
-                    if (isupper(chess[the_motion.end_position_y]
-                                     [the_motion.end_position_x])
-                        && ((the_motion.end_position_y
-                             - the_motion.start_position_y)
-                            == 1) //радиус съедания
-                        && (abs(the_motion.start_position_x
-                                - the_motion.end_position_x)
-                            == 1)) {
-                        chess[the_motion.start_position_y]
-                             [the_motion.start_position_x]
-                                = ' '; //убираем изначальную пешку
-                        chess[the_motion.end_position_y]
-                             [the_motion.end_position_x]
-                                = tolower(
-                                        the_motion
-                                                .transformation_figure); //ставим
-                                                                         //фигуру
-                        return true; //взятие если true
-                    } else
-                        return false;
-                } else { // тихий ход вперед
-                    if ((the_motion.end_position_x
-                         == the_motion.start_position_x)
-                        && (the_motion.end_position_y
-                            > the_motion.start_position_y)) //проверяем что идем
-                                                            //вперед
-                    {
-                        if (chess[the_motion.start_position_y - 1]
-                                 [the_motion.start_position_x]
-                            == ' ') //на 1 клетку вперед нет фигуры
-                        {
-                            chess[the_motion.start_position_y]
-                                 [the_motion.start_position_x]
-                                    = ' '; //убираем изначальную пешку
-                            chess[the_motion.end_position_y]
-                                 [the_motion.end_position_x]
-                                    = tolower(
-                                            the_motion
-                                                    .transformation_figure); //ставим фигуру
-                            return true;
-                        }
-                    }
-                }
-            }
-        } else {
-            if (the_motion.type_motion) { //взятие
-                if ((chess[the_motion.end_position_y][the_motion.end_position_x]
-                     != ' ')
-                    && (the_motion.color == Black)
-                    && ((the_motion.end_position_y
-                         - the_motion.start_position_y)
-                        == 1) //радиус съедания
-                    && (abs(the_motion.start_position_x
-                            - the_motion.end_position_x)
-                        == 1)) {
-                    chess[the_motion.start_position_y]
-                         [the_motion.start_position_x]
-                            = ' '; //убираем изначальную пешку
-                    chess[the_motion.end_position_y][the_motion.end_position_x]
-                            = 'p'; //переноси пешку куда ходим
-                    return true; //взятие если true
-                } else
-                    return false;
-            } else {
-                //тихий
-                if ((the_motion.end_position_x == the_motion.start_position_x)
-                    && (the_motion.end_position_y
-                        > the_motion.start_position_y)) //проверяем что идем
-                                                        //вперед
-                {
-                    if (chess[the_motion.start_position_y + 1]
-                             [the_motion.start_position_x]
-                        == ' ') //на 1 клетку вперед нет фигуры
-                    {
-                        if ((chess[the_motion.start_position_y + 2]
-                                  [the_motion.start_position_x]
-                             == ' ') // пусто на второй клетке
-                            && (the_motion.start_position_y
-                                == 1)) //ход на 2 если нужный ряд
-                        {
-                            //ход на 2
-                            chess[the_motion.start_position_y]
-                                 [the_motion.start_position_x]
-                                    = ' '; //убираем изначальную пешку
-                            chess[the_motion.end_position_y]
-                                 [the_motion.end_position_x]
-                                    = 'p'; //переноси пешку куда ходим
-                            return true;
-                        } else {
-                            //ход на 1
-                            chess[the_motion.start_position_y]
-                                 [the_motion.start_position_x]
-                                    = ' '; //убираем изначальную пешку
-                            chess[the_motion.end_position_y]
-                                 [the_motion.end_position_x]
-                                    = 'p'; //переносим пешку куда ходим
-                            return true;
-                        }
-                    } else
-                        return false;
-                } else
-                    return false;
-            }
-        }
-    } else
-        return false;
+    int end_y = the_motion.end_position_y;
+    int end_x = the_motion.end_position_x;
+
+    if (chess[end_y][end_x] != 'K' && chess[end_y][end_x] != 'k'
+        && the_motion.flag_ep == 1 && (chess[end_y][end_x] == ' ')) {
+        return true;
+    }
     return false;
+}
+
+static bool checkStartPosition(motion the_motion, char chess[8][8])
+{
+    int start_y = the_motion.start_position_y;
+    int start_x = the_motion.start_position_x;
+
+    char figure;
+    if (the_motion.color == Black) {
+        figure = tolower(the_motion.figure);
+    } else {
+        figure = the_motion.figure;
+    }
+
+    if (chess[start_y][start_x] == figure) {
+        return true;
+    }
+
+    return false;
+}
+
+static bool checkEndPosition(motion the_motion, char chess[8][8])
+{
+    int end_y = the_motion.end_position_y;
+    int end_x = the_motion.end_position_x;
+
+    if (the_motion.type_motion == 0 && chess[end_y][end_x] == ' ') {
+        return true;
+    } else if (chess[end_y][end_x] != 'K' && chess[end_y][end_x] != 'k')
+        if (the_motion.color != getColor(chess[end_y][end_x])) {
+            return true;
+        }
+
+    return false;
+}
+
+static void makeMove(motion the_motion, char chess[8][8])
+{
+    int start_y = the_motion.start_position_y;
+    int start_x = the_motion.start_position_x;
+    int end_y = the_motion.end_position_y;
+    int end_x = the_motion.end_position_x;
+
+    if (the_motion.figure == 'P' && the_motion.flag_ep == 1) {
+        chess[start_y][end_x] = ' ';
+    }
+
+    chess[end_y][end_x] = chess[start_y][start_x];
+    chess[start_y][start_x] = ' ';
+}
+
+static void makeTransformation(motion the_motion, char chess[8][8])
+{
+    int start_y = the_motion.start_position_y;
+    int start_x = the_motion.start_position_x;
+    int end_y = the_motion.end_position_y;
+    int end_x = the_motion.end_position_x;
+
+    if (getColor(chess[start_y][start_x]) == White)
+        chess[end_y][end_x] = the_motion.transformation_figure;
+    else
+        chess[end_y][end_x] = tolower(the_motion.transformation_figure);
+
+    chess[start_y][start_x] = ' ';
+}
+
+bool moveP(motion the_motion, char chess[8][8])
+{
+    if (!checkAbilityP(the_motion, chess)
+        || !checkStartPosition(the_motion, chess)
+        || !(checkEndPosition(the_motion, chess)
+             || checkAbilityEP(the_motion, chess))) {
+        return false;
+    }
+
+    if (the_motion.flag_transformation == 1) {
+        makeTransformation(the_motion, chess);
+    } else
+        makeMove(the_motion, chess);
+
+    return true;
 }
 
 bool moveB(motion the_motion, char chess[8][8])
