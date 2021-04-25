@@ -62,6 +62,43 @@ static bool checkAbilityEP(motion the_motion, char chess[8][8])
     return false;
 }
 
+static bool checkAbilityB(motion the_motion, char chess[8][8])
+{
+    int start_y = the_motion.start_position_y;
+    int start_x = the_motion.start_position_x;
+    int end_y = the_motion.end_position_y;
+    int end_x = the_motion.end_position_x;
+    int delta_x = abs(end_x - start_x);
+    int delta_y = abs(end_y - start_y);
+
+    if (delta_x != delta_y) {
+        return false;
+    }
+
+    int direction_x;
+    int direction_y;
+
+    if (start_y > end_y) {
+        direction_y = -1;
+    } else {
+        direction_y = 1;
+    }
+
+    if (start_x > end_x) {
+        direction_x = -1;
+    } else {
+        direction_x = 1;
+    }
+
+    for (int i = 1; i < delta_x - 1; ++i)
+        if (chess[start_y + i * direction_y][start_x + i * direction_x]
+            != ' ') {
+            return false;
+        }
+
+    return true;
+}
+
 static bool checkStartPosition(motion the_motion, char chess[8][8])
 {
     int start_y = the_motion.start_position_y;
@@ -145,7 +182,14 @@ bool moveP(motion the_motion, char chess[8][8])
 
 bool moveB(motion the_motion, char chess[8][8])
 {
-    return false;
+    if (!checkAbilityB(the_motion, chess)
+        || !checkStartPosition(the_motion, chess)
+        || !checkEndPosition(the_motion, chess)) {
+        return false;
+    }
+
+    makeMove(the_motion, chess);
+    return true;
 }
 
 bool moveN(motion the_motion, char chess[8][8])
