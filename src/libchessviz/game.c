@@ -69,7 +69,7 @@ bool _move(motion the_motion, char chess[8][8])
         result = moveB(the_motion, chess);
         break;
     case 'N':
-        //  result = moveN(the_motion, chess);
+        result = moveN(the_motion, chess);
         break;
     case 'Q':
         //  result = moveQ(the_motion, chess);
