@@ -16,7 +16,7 @@ bool checkNumberMove(char* number_move)
             return false;
 
         for (int i = 0; i < size - 1; i++)
-            if (number_move[i] < '1' || number_move[i] > '9')
+            if (number_move[i] < '0' || number_move[i] > '9')
                 return false;
     }
 
