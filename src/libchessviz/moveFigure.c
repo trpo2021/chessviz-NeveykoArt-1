@@ -150,6 +150,22 @@ static bool checkAbilityR(motion the_motion, char chess[8][8])
     return true;
 }
 
+static bool checkAbilityK(motion the_motion)
+{
+    int start_y = the_motion.start_position_y;
+    int start_x = the_motion.start_position_x;
+    int end_y = the_motion.end_position_y;
+    int end_x = the_motion.end_position_x;
+
+    if ((abs(start_y - end_y) == 1 && abs(start_x - end_x) == 1)
+        || (abs(start_y - end_y) == 1 && start_x == end_x)
+        || (abs(start_x - end_x) == 1 && start_y == end_y)) {
+        return true;
+    }
+
+    return false;
+}
+
 static bool checkStartPosition(motion the_motion, char chess[8][8])
 {
     int start_y = the_motion.start_position_y;
@@ -280,5 +296,11 @@ bool moveQ(motion the_motion, char chess[8][8])
 
 bool moveK(motion the_motion, char chess[8][8])
 {
-    return false;
+    if (!checkAbilityK(the_motion) || !checkStartPosition(the_motion, chess)
+        || !checkEndPosition(the_motion, chess)) {
+        return false;
+    }
+
+    makeMove(the_motion, chess);
+    return true;
 }
