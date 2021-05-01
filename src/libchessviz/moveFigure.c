@@ -166,6 +166,31 @@ static bool checkAbilityK(motion the_motion)
     return false;
 }
 
+static bool checkAbilityCastling(motion the_motion, char chess[8][8])
+{
+    int line;
+    if (the_motion.color == White) {
+        line = 7;
+    } else {
+        line = 0;
+    }
+
+    if (the_motion.castling == Short) {
+        if ((chess[line][4] == 'K' || chess[line][4] == 'k')
+            && (chess[line][7] == 'R' || chess[line][7] == 'r')
+            && chess[line][5] == ' ' && chess[line][6] == ' ')
+            return true;
+    } else if (the_motion.castling == Long) {
+        if ((chess[line][4] == 'K' || chess[line][4] == 'k')
+            && (chess[line][0] == 'R' || chess[line][0] == 'r')
+            && chess[line][3] == ' ' && chess[line][2] == ' '
+            && chess[line][1] == ' ')
+            return true;
+    }
+
+    return false;
+}
+
 static bool checkStartPosition(motion the_motion, char chess[8][8])
 {
     int start_y = the_motion.start_position_y;
@@ -228,6 +253,28 @@ static void makeTransformation(motion the_motion, char chess[8][8])
         chess[end_y][end_x] = tolower(the_motion.transformation_figure);
 
     chess[start_y][start_x] = ' ';
+}
+
+static void makeCastling(motion the_motion, char chess[8][8])
+{
+    int line;
+    if (the_motion.color == White) {
+        line = 7;
+    } else {
+        line = 0;
+    }
+
+    if (the_motion.castling == Short) {
+        chess[line][6] = chess[line][4];
+        chess[line][4] = ' ';
+        chess[line][5] = chess[line][7];
+        chess[line][7] = ' ';
+    } else if (the_motion.castling == Long) {
+        chess[line][2] = chess[line][4];
+        chess[line][4] = ' ';
+        chess[line][3] = chess[line][0];
+        chess[line][0] = ' ';
+    }
 }
 
 bool moveP(motion the_motion, char chess[8][8])
@@ -302,5 +349,15 @@ bool moveK(motion the_motion, char chess[8][8])
     }
 
     makeMove(the_motion, chess);
+    return true;
+}
+
+bool moveCastling(motion the_motion, char chess[8][8])
+{
+    if (!checkAbilityCastling(the_motion, chess)) {
+        return false;
+    }
+
+    makeCastling(the_motion, chess);
     return true;
 }

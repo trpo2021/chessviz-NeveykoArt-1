@@ -7,3 +7,4 @@ bool moveN(motion the_motion, char chess[8][8]);
 bool moveK(motion the_motion, char chess[8][8]);
 bool moveQ(motion the_motion, char chess[8][8]);
 bool moveR(motion the_motion, char chess[8][8]);
+bool moveCastling(motion the_motion, char chess[8][8]);
