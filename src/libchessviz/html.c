@@ -66,12 +66,10 @@ void addChessHTML(FILE* file, char chess[8][8], char* move)
             fputs("\t\t\t\t<td>", file);
             if (chess[i][j] != ' ') {
                 fprintf(file, "<span class=\"%c\"></span>", chess[i][j]);
-                // do some
             }
             fputs("\t\t\t\t</td>\n", file);
         }
         fputs("\t\t\t</tr>\n", file);
     }
     fputs("\t</table>\n", file);
-    // fputs(, file);
 }
