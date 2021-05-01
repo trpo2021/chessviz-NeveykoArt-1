@@ -20,7 +20,7 @@ static bool checkAbilityP(motion the_motion, char chess[8][8])
     char figure;
     if (getColor(chess[start_y][start_x]) == White) {
         direction = 1;
-        start_horizont = 6; //?
+        start_horizont = 6; 
         figure = 'p';
     } else {
         direction = -1;

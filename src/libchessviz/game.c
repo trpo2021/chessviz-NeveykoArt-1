@@ -45,48 +45,28 @@ void printChess(char chess[8][8])
     printf("\n");
 }
 
-void print_the_motion(motion the_motion)
-{
-    printf("Color = %d\n", the_motion.color);
-    printf("Figure = %c\n", the_motion.figure);
-    printf("Start_position_x = %d \n", the_motion.start_position_x);
-    printf("Start_position_y = %d\n", the_motion.start_position_y);
-    printf("Type = %d\n", the_motion.type_motion);
-    printf("End_position_x = %d\n", the_motion.end_position_x);
-    printf("End_position_y = %d\n", the_motion.end_position_y);
-    printf("Castling = %d\n", the_motion.castling);
-}
-
 bool _move(motion the_motion, char chess[8][8])
 {
-    bool result = false;
-
     switch (the_motion.figure) {
     case 'P':
-        result = moveP(the_motion, chess);
-        break;
+        return moveP(the_motion, chess);
     case 'B':
-        result = moveB(the_motion, chess);
-        break;
+        return moveB(the_motion, chess);
     case 'N':
-        result = moveN(the_motion, chess);
-        break;
+        return moveN(the_motion, chess);
     case 'Q':
-        result = moveQ(the_motion, chess);
-        break;
+        return moveQ(the_motion, chess);
     case 'K':
-        result = moveK(the_motion, chess);
-        break;
+        return moveK(the_motion, chess);
     case 'R':
-        result = moveR(the_motion, chess);
-        break;
+        return moveR(the_motion, chess);
     }
 
     if (the_motion.castling != Without) {
-        result = moveCastling(the_motion, chess);
+        return moveCastling(the_motion, chess);
     }
 
-    return result;
+    return false;
 }
 
 motion initMotion()
