@@ -20,7 +20,7 @@ static bool checkAbilityP(motion the_motion, char chess[8][8])
     char figure;
     if (getColor(chess[start_y][start_x]) == White) {
         direction = 1;
-        start_horizont = 6; 
+        start_horizont = 6;
         figure = 'p';
     } else {
         direction = -1;
@@ -176,10 +176,10 @@ static bool checkAbilityCastling(motion the_motion, char chess[8][8])
     }
 
     if (the_motion.castling == Short) {
-      if (((chess[line][4] == 'K' && chess[line][7] == 'R')
-           || (chess[line][4] == 'k' && chess[line][7] == 'r'))
-          && chess[line][5] == ' ' && chess[line][6] == ' ')
-          return true;
+        if (((chess[line][4] == 'K' && chess[line][7] == 'R')
+             || (chess[line][4] == 'k' && chess[line][7] == 'r'))
+            && chess[line][5] == ' ' && chess[line][6] == ' ')
+            return true;
     } else if (the_motion.castling == Long) {
         if (((chess[line][4] == 'K' && chess[line][0] == 'R')
              || (chess[line][4] == 'k' && chess[line][0] == 'r'))
