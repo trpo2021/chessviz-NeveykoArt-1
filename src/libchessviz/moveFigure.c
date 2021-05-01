@@ -176,13 +176,13 @@ static bool checkAbilityCastling(motion the_motion, char chess[8][8])
     }
 
     if (the_motion.castling == Short) {
-        if ((chess[line][4] == 'K' || chess[line][4] == 'k')
-            && (chess[line][7] == 'R' || chess[line][7] == 'r')
-            && chess[line][5] == ' ' && chess[line][6] == ' ')
-            return true;
+      if (((chess[line][4] == 'K' && chess[line][7] == 'R')
+           || (chess[line][4] == 'k' && chess[line][7] == 'r'))
+          && chess[line][5] == ' ' && chess[line][6] == ' ')
+          return true;
     } else if (the_motion.castling == Long) {
-        if ((chess[line][4] == 'K' || chess[line][4] == 'k')
-            && (chess[line][0] == 'R' || chess[line][0] == 'r')
+        if (((chess[line][4] == 'K' && chess[line][0] == 'R')
+             || (chess[line][4] == 'k' && chess[line][0] == 'r'))
             && chess[line][3] == ' ' && chess[line][2] == ' '
             && chess[line][1] == ' ')
             return true;
