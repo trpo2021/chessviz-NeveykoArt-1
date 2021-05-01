@@ -81,6 +81,11 @@ bool _move(motion the_motion, char chess[8][8])
         result = moveR(the_motion, chess);
         break;
     }
+
+    if (the_motion.castling != Without) {
+        result = moveCastling(the_motion, chess);
+    }
+
     return result;
 }
 
