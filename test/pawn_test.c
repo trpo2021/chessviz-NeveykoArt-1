@@ -72,7 +72,6 @@ CTEST(moveP, pawn_test3)
 
     ASSERT_TRUE(checkLine(line, &match_));
 
-
     chess[match_.white_motion.start_position_y]
          [match_.white_motion.start_position_x]
             = match_.white_motion.figure;
@@ -99,7 +98,6 @@ CTEST(moveP, pawn_test4)
 
     ASSERT_TRUE(checkLine(line, &match_));
 
-
     chess[match_.white_motion.start_position_y]
          [match_.white_motion.start_position_x]
             = match_.white_motion.figure;
@@ -124,7 +122,6 @@ CTEST(moveP, pawn_test5)
     char line[] = "1. e6-e7+ e3-e2";
 
     ASSERT_TRUE(checkLine(line, &match_));
-
 
     chess[match_.white_motion.start_position_y]
          [match_.white_motion.start_position_x]
@@ -151,7 +148,6 @@ CTEST(moveP, pawn_test6)
     char line[] = "1. e6-a8 e3-g7";
 
     ASSERT_TRUE(checkLine(line, &match_));
-
 
     chess[match_.white_motion.start_position_y]
          [match_.white_motion.start_position_x]

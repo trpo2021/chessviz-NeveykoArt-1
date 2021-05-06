@@ -1,11 +1,12 @@
 #include "chess.h"
 
-int atoi_new(char *id_move) {
-  char buf[4];
+int atoi_new(char* id_move)
+{
+    char buf[4];
 
-  strncpy(buf, id_move, strlen(id_move) - 1);
+    strncpy(buf, id_move, strlen(id_move) - 1);
 
-  return atoi(buf);
+    return atoi(buf);
 }
 
 static bool checkNumberMove(char* number_move)
@@ -14,7 +15,7 @@ static bool checkNumberMove(char* number_move)
         return false;
     } else {
         int size = strlen(number_move);
-        if (size == 1 || size > 5)
+        if (size == 1 || size >L 5)
             return false;
 
         if (number_move[size - 1] != '.')
@@ -186,38 +187,38 @@ bool checkLine(char* line, match* match_)
     return true;
 }
 
-match *Read_file(FILE *file, int *count_moves)
+match* Read_file(FILE* file, int* count_moves)
 {
-  const int MAX_COUNT_CHARS = 80;
+    const int MAX_COUNT_CHARS = 80;
 
-  char *buf_line = malloc(MAX_COUNT_CHARS * sizeof(char));
+    char* buf_line = malloc(MAX_COUNT_CHARS * sizeof(char));
 
-  while (!feof(file)) {
-    fgets(buf_line, MAX_COUNT_CHARS, file);
-    ++(*count_moves);
-  }
-
-  --(*count_moves);
-
-  match *match_ = malloc(*count_moves * sizeof(match));
-
-  rewind(file);
-
-  for(int i = 0; i < *count_moves; i++) {
-    fgets(buf_line, MAX_COUNT_CHARS, file);
-    if (!checkLine(buf_line, &(match_[i]))) {
-      free(match_);
-      return NULL;
+    while (!feof(file)) {
+        fgets(buf_line, MAX_COUNT_CHARS, file);
+        ++(*count_moves);
     }
-  }
 
-  for (int i = 0; i < *count_moves; ++i) {
-    if (!(atoi_new(match_[i].id_move) == (i + 1))) {
-      free(match_);
-      printf("Error: wrong sequence\n");
-      return NULL;
+    --(*count_moves);
+
+    match* match_ = malloc(*count_moves * sizeof(match));
+
+    rewind(file);
+
+    for (int i = 0; i < *count_moves; i++) {
+        fgets(buf_line, MAX_COUNT_CHARS, file);
+        if (!checkLine(buf_line, &(match_[i]))) {
+            free(match_);
+            return NULL;
+        }
     }
-  }
 
-  return match_;
+    for (int i = 0; i < *count_moves; ++i) {
+        if (!(atoi_new(match_[i].id_move) == (i + 1))) {
+            free(match_);
+            printf("Error: wrong sequence\n");
+            return NULL;
+        }
+    }
+
+    return match_;
 }

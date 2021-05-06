@@ -235,7 +235,7 @@ CTEST(checkMove, test24)
 CTEST(checkMove, test25)
 {
     motion the_motion = initMotion();
-    char *move = malloc(6 * sizeof(char));
+    char* move = malloc(6 * sizeof(char));
 
     move[0] = 'e';
     move[1] = '2';

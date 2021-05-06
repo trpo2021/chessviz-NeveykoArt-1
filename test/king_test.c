@@ -150,8 +150,8 @@ CTEST(moveK, king_test6)
     char line[] = "1. Ke2-g3 Ke8-c2";
 
     ASSERT_TRUE(checkLine(line, &match_));
-    //chess[7][3] = 'p';
-    //chess[1][5] = 'P';
+    // chess[7][3] = 'p';
+    // chess[1][5] = 'P';
 
     chess[match_.white_motion.start_position_y]
          [match_.white_motion.start_position_x]
@@ -244,7 +244,7 @@ CTEST(moveK, king_test9)
             = tolower(match_.black_motion.figure);
 
     ASSERT_TRUE(moveK(match_.white_motion, chess));
-    //ASSERT_FALSE(moveK(match_.black_motion, chess));
+    // ASSERT_FALSE(moveK(match_.black_motion, chess));
 }
 
 CTEST(moveK, king_test10)
@@ -261,7 +261,7 @@ CTEST(moveK, king_test10)
     char line[] = "1. Ke2-d1 Ke7xf8#";
 
     ASSERT_TRUE(checkLine(line, &match_));
-    //chess[7][3] = 'P';
+    // chess[7][3] = 'P';
     chess[0][5] = 'P';
 
     chess[match_.white_motion.start_position_y]
