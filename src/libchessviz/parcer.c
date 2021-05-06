@@ -15,7 +15,7 @@ static bool checkNumberMove(char* number_move)
         return false;
     } else {
         int size = strlen(number_move);
-        if (size == 1 || size >L 5)
+        if (size == 1 || size > 5)
             return false;
 
         if (number_move[size - 1] != '.')
