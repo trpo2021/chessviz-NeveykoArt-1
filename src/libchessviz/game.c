@@ -84,3 +84,51 @@ motion initMotion()
 
     return the_motion;
 }
+
+match initMatch()
+{
+  match match_;
+  match_.white_motion = initMotion();
+  match_.black_motion = initMotion();
+
+  match_.white_motion.color = White;
+  match_.black_motion.color = Black;
+
+  return match_;
+}
+
+void visualizationChess(char chess[8][8], match* match_, int count_moves) {
+  FILE* file_html = fopen("../bin/chess.html", "w+");
+  addStartHTML(file_html);
+  addChessHTML(file_html, chess, "");
+
+  printf("Start chess table:\n");
+  printChess(chess);
+  for (int i = 0; i < count_moves; i++) {
+
+    _move(match_[i].white_motion, chess);
+    addChessHTML(file_html, chess, match_[i].id_move);
+    printf("%d  White:\n", atoi_new(match_[i].id_move));
+    printChess(chess);
+
+    if (match_[i].white_motion.flag_cmate == true) {
+      printf("\tWhite Wins\n!");
+      break;
+    }
+
+    _move(match_[i].black_motion, chess);
+    addChessHTML(file_html, chess, match_[i].id_move);
+    printf("%d  Black:\n", atoi_new(match_[i].id_move));
+    printChess(chess);
+
+    if (match_[i].black_motion.flag_cmate == true) {
+      printf("\t\tBlack Wins!\n");
+      break;
+    }
+  }
+
+  printf("\n\t\tThe end\n");
+
+  addEndHTML(file_html);
+  fclose(file_html);
+}
