@@ -33,3 +33,9 @@ typedef struct {
     enum Castling castling;
 
 } motion;
+
+typedef struct {
+    motion white_motion;
+    motion black_motion;
+    char id_move[4];
+} match;
