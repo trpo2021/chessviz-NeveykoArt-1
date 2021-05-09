@@ -132,3 +132,19 @@ void visualizationChess(char chess[8][8], match* match_, int count_moves)
     addEndHTML(file_html);
     fclose(file_html);
 }
+
+void testPrint(char chess[8][8], match match_)
+{
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            chess[i][j] = ' ';
+        }
+    }
+
+    chess[match_.white_motion.start_position_y]
+         [match_.white_motion.start_position_x]
+            = match_.white_motion.figure;
+    chess[match_.black_motion.start_position_y]
+         [match_.black_motion.start_position_x]
+            = tolower(match_.black_motion.figure);
+}

@@ -13,21 +13,23 @@ static bool checkNumberMove(char* number_move)
 {
     if (number_move == NULL) {
         return false;
-    } else {
-        int size = strlen(number_move);
-        if (size == 1 || size > 5)
-            return false;
-
-        if (number_move[size - 1] != '.')
-            return false;
-
-        if (number_move[0] == '0')
-            return false;
-
-        for (int i = 0; i < size - 1; i++)
-            if (number_move[i] < '0' || number_move[i] > '9')
-                return false;
     }
+
+    int size = strlen(number_move);
+
+    if (size == 1 || size > 5)
+        return false;
+
+    if (number_move[size - 1] != '.')
+        return false;
+
+    if (number_move[0] == '0')
+        return false;
+
+    for (int i = 0; i < size - 1; i++)
+        if (number_move[i] < '0' || number_move[i] > '9')
+            return false;
+
     return true;
 }
 
@@ -36,13 +38,13 @@ static bool checkCastling(char* move, motion* the_motion)
     if (strncmp(move, " 0-0-0 ", 7) == 0) {
         the_motion->castling = Long;
         return true;
-    } else if (strncmp(move, " 0-0 ", 5) == 0) {
+    }
+    if (strncmp(move, " 0-0 ", 5) == 0) {
         the_motion->castling = Short;
         return true;
-    } else {
-        the_motion->castling = Without;
-        return false;
     }
+    the_motion->castling = Without;
+    return false;
 }
 
 static bool checkFigure(char* move, motion* the_motion, size_t* position)
