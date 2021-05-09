@@ -1,0 +1,7 @@
+# Gitignore file
+*.o
+*.c~O
+*.out
+*.html
+*.d
+*.a
