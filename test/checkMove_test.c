@@ -235,23 +235,13 @@ CTEST(checkMove, test24)
 CTEST(checkMove, test25)
 {
     motion the_motion = initMotion();
-    char* move = malloc(6 * sizeof(char));
-
-    move[0] = 'e';
-    move[1] = '2';
-    move[2] = '-';
-    move[3] = 'e';
-    move[4] = '4';
-    move[5] = '\0';
-
-    ASSERT_TRUE(checkMove(move, &the_motion));
-    ASSERT_EQUAL('P', the_motion.figure);
+    ASSERT_TRUE(checkMove("Ne2-e7", &the_motion));
+    ASSERT_EQUAL('N', the_motion.figure);
     ASSERT_EQUAL(false, the_motion.type_motion);
     ASSERT_EQUAL(4, the_motion.start_position_x);
     ASSERT_EQUAL(6, the_motion.start_position_y);
     ASSERT_EQUAL(4, the_motion.end_position_x);
-    ASSERT_EQUAL(4, the_motion.end_position_y);
-    free(move);
+    ASSERT_EQUAL(1, the_motion.end_position_y);
 }
 
 CTEST(checkMove, test26)

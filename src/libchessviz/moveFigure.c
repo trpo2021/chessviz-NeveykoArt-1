@@ -2,19 +2,15 @@
 
 static enum BlackWhite getColor(char figure)
 {
-    if (islower(figure)) {
-        return Black;
-    } else {
-        return White;
-    }
+    return islower(figure) ? Black : White;
 }
 
 static bool checkAbilityP(motion the_motion, char chess[8][8])
 {
-    int start_y = the_motion.start_position_y;
-    int start_x = the_motion.start_position_x;
-    int end_y = the_motion.end_position_y;
-    int end_x = the_motion.end_position_x;
+    const int start_y = the_motion.start_position_y;
+    const int start_x = the_motion.start_position_x;
+    const int end_y = the_motion.end_position_y;
+    const int end_x = the_motion.end_position_x;
 
     int direction, start_horizont;
     char figure;
@@ -33,18 +29,18 @@ static bool checkAbilityP(motion the_motion, char chess[8][8])
 
     if ((delta_y == 1) && (start_x == end_x)) {
         return true;
-    } else if (
-            (delta_y == 2) && (start_x == end_x)
-            && (chess[end_y + direction][start_x] == ' ')
-            && (start_y == start_horizont)) {
+    }
+    if ((delta_y == 2) && (start_x == end_x)
+        && (chess[end_y + direction][start_x] == ' ')
+        && (start_y == start_horizont)) {
         return true;
-    } else if (
-            (the_motion.flag_ep == 1) && (delta_y == 1) && (abs(delta_x) == 1)
-            && (chess[start_y][end_x] == figure)) {
+    }
+    if ((the_motion.flag_ep == 1) && (delta_y == 1) && (abs(delta_x) == 1)
+        && (chess[start_y][end_x] == figure)) {
         return true;
-    } else if (
-            (the_motion.type_motion == 1) && (delta_y == 1)
-            && (abs(delta_x) == 1)) {
+    }
+    if ((the_motion.type_motion == 1) && (delta_y == 1)
+        && (abs(delta_x) == 1)) {
         return true;
     }
     return false;
@@ -52,24 +48,21 @@ static bool checkAbilityP(motion the_motion, char chess[8][8])
 
 static bool checkAbilityEP(motion the_motion, char chess[8][8])
 {
-    int end_y = the_motion.end_position_y;
-    int end_x = the_motion.end_position_x;
+    const int end_y = the_motion.end_position_y;
+    const int end_x = the_motion.end_position_x;
 
-    if (chess[end_y][end_x] != 'K' && chess[end_y][end_x] != 'k'
-        && the_motion.flag_ep == 1 && (chess[end_y][end_x] == ' ')) {
-        return true;
-    }
-    return false;
+    return (chess[end_y][end_x] != 'K' && chess[end_y][end_x] != 'k'
+            && the_motion.flag_ep == 1 && (chess[end_y][end_x] == ' '));
 }
 
 static bool checkAbilityB(motion the_motion, char chess[8][8])
 {
-    int start_y = the_motion.start_position_y;
-    int start_x = the_motion.start_position_x;
-    int end_y = the_motion.end_position_y;
-    int end_x = the_motion.end_position_x;
-    int delta_x = abs(end_x - start_x);
-    int delta_y = abs(end_y - start_y);
+    const int start_y = the_motion.start_position_y;
+    const int start_x = the_motion.start_position_x;
+    const int end_y = the_motion.end_position_y;
+    const int end_x = the_motion.end_position_x;
+    const int delta_x = abs(end_x - start_x);
+    const int delta_y = abs(end_y - start_y);
 
     if (delta_x != delta_y) {
         return false;
@@ -101,65 +94,65 @@ static bool checkAbilityB(motion the_motion, char chess[8][8])
 
 static bool checkAbilityN(motion the_motion)
 {
-    int start_y = the_motion.start_position_y;
-    int start_x = the_motion.start_position_x;
-    int end_y = the_motion.end_position_y;
-    int end_x = the_motion.end_position_x;
+    const int start_y = the_motion.start_position_y;
+    const int start_x = the_motion.start_position_x;
+    const int end_y = the_motion.end_position_y;
+    const int end_x = the_motion.end_position_x;
 
-    if ((abs(start_y - end_y) == 1 && abs(start_x - end_x) == 2)
-        || (abs(start_y - end_y) == 2 && abs(start_x - end_x) == 1)) {
-        return true;
-    }
-
-    return false;
+    return ((abs(start_y - end_y) == 1 && abs(start_x - end_x) == 2)
+            || (abs(start_y - end_y) == 2 && abs(start_x - end_x) == 1));
 }
 
 static bool checkAbilityR(motion the_motion, char chess[8][8])
 {
-    int start_y = the_motion.start_position_y;
-    int start_x = the_motion.start_position_x;
-    int end_y = the_motion.end_position_y;
-    int end_x = the_motion.end_position_x;
+    const int start_y = the_motion.start_position_y;
+    const int start_x = the_motion.start_position_x;
+    const int end_y = the_motion.end_position_y;
+    const int end_x = the_motion.end_position_x;
 
     if (start_y < end_y && start_x == end_x) {
         for (int i = (start_y + 1); i < end_y; ++i) {
             if (chess[i][start_x] != ' ')
                 return false;
         }
-    } else if (start_y > end_y && start_x == end_x) {
+    }
+    if (start_y > end_y && start_x == end_x) {
         for (int i = (start_y - 1); i > end_y; --i) {
             if (chess[i][start_x] != ' ')
                 return false;
         }
-    } else if (start_y == end_y && start_x < end_x) {
+    }
+    if (start_y == end_y && start_x < end_x) {
         for (int i = (start_x + 1); i < end_x; ++i) {
             if (chess[start_y][i] != ' ')
                 return false;
         }
-    } else if (start_y == end_y && start_x > end_x) {
+    }
+    if (start_y == end_y && start_x > end_x) {
         for (int i = (start_x - 1); i > end_x; --i) {
             if (chess[start_y][i] != ' ')
                 return false;
         }
-    } else
+    }
+    if (start_y == end_y && start_x == end_x) {
         return false;
+    }
+    if (start_y != end_y && start_x != end_x) {
+        return false;
+    }
     return true;
 }
 
 static bool checkAbilityK(motion the_motion)
 {
-    int start_y = the_motion.start_position_y;
-    int start_x = the_motion.start_position_x;
-    int end_y = the_motion.end_position_y;
-    int end_x = the_motion.end_position_x;
+    const int start_y = the_motion.start_position_y;
+    const int start_x = the_motion.start_position_x;
+    const int end_y = the_motion.end_position_y;
+    const int end_x = the_motion.end_position_x;
 
-    if ((abs(start_y - end_y) == 1 && abs(start_x - end_x) == 1)
-        || (abs(start_y - end_y) == 1 && start_x == end_x)
-        || (abs(start_x - end_x) == 1 && start_y == end_y)) {
-        return true;
-    }
-
-    return false;
+    return ((abs(start_y - end_y) == 1 && abs(start_x - end_x) == 1)
+            || (abs(start_y - end_y) == 1 && start_x == end_x)
+            || (abs(start_x - end_x) == 1 && start_y == end_y));
 }
 
 static bool checkAbilityCastling(motion the_motion, char chess[8][8])
@@ -176,7 +169,8 @@ static bool checkAbilityCastling(motion the_motion, char chess[8][8])
              || (chess[line][4] == 'k' && chess[line][7] == 'r'))
             && chess[line][5] == ' ' && chess[line][6] == ' ')
             return true;
-    } else if (the_motion.castling == Long) {
+    }
+    if (the_motion.castling == Long) {
         if (((chess[line][4] == 'K' && chess[line][0] == 'R')
              || (chess[line][4] == 'k' && chess[line][0] == 'r'))
             && chess[line][3] == ' ' && chess[line][2] == ' '
@@ -189,8 +183,8 @@ static bool checkAbilityCastling(motion the_motion, char chess[8][8])
 
 static bool checkStartPosition(motion the_motion, char chess[8][8])
 {
-    int start_y = the_motion.start_position_y;
-    int start_x = the_motion.start_position_x;
+    const int start_y = the_motion.start_position_y;
+    const int start_x = the_motion.start_position_x;
 
     char figure;
     if (the_motion.color == Black) {
@@ -208,14 +202,14 @@ static bool checkStartPosition(motion the_motion, char chess[8][8])
 
 static bool checkEndPosition(motion the_motion, char chess[8][8])
 {
-    int end_y = the_motion.end_position_y;
-    int end_x = the_motion.end_position_x;
+    const int end_y = the_motion.end_position_y;
+    const int end_x = the_motion.end_position_x;
 
     if (the_motion.type_motion == 0 && chess[end_y][end_x] == ' ') {
         return true;
-    } else if (
-            chess[end_y][end_x] != 'K' && chess[end_y][end_x] != 'k'
-            && the_motion.type_motion == 1)
+    }
+    if (chess[end_y][end_x] != 'K' && chess[end_y][end_x] != 'k'
+        && the_motion.type_motion == 1)
         if (the_motion.color != getColor(chess[end_y][end_x])) {
             return true;
         }
@@ -247,10 +241,10 @@ static void makeCastling(motion the_motion, char chess[8][8])
 
 static void makeMove(motion the_motion, char chess[8][8])
 {
-    int start_y = the_motion.start_position_y;
-    int start_x = the_motion.start_position_x;
-    int end_y = the_motion.end_position_y;
-    int end_x = the_motion.end_position_x;
+    const int start_y = the_motion.start_position_y;
+    const int start_x = the_motion.start_position_x;
+    const int end_y = the_motion.end_position_y;
+    const int end_x = the_motion.end_position_x;
 
     if (the_motion.figure == 'P' && the_motion.flag_ep == 1) {
         chess[start_y][end_x] = ' ';
@@ -262,10 +256,10 @@ static void makeMove(motion the_motion, char chess[8][8])
 
 static void makeTransformation(motion the_motion, char chess[8][8])
 {
-    int start_y = the_motion.start_position_y;
-    int start_x = the_motion.start_position_x;
-    int end_y = the_motion.end_position_y;
-    int end_x = the_motion.end_position_x;
+    const int start_y = the_motion.start_position_y;
+    const int start_x = the_motion.start_position_x;
+    const int end_y = the_motion.end_position_y;
+    const int end_x = the_motion.end_position_x;
 
     if (getColor(chess[start_y][start_x]) == White)
         chess[end_y][end_x] = the_motion.transformation_figure;
